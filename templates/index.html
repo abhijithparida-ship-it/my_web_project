@@ -1,27 +1,170 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <title>Abhishek's Vibe Check</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Abhijith | Dev Dashboard</title>
     <style>
-        body { font-family: 'Segoe UI', sans-serif; max-width: 500px; margin: auto; padding: 20px; background: #f0f2f5; }
-        .card { background: white; padding: 15px; border-radius: 10px; margin-bottom: 10px; box-shadow: 0 2px 5px rgba(0,0,0,0.1); }
-        input, textarea { width: 100%; margin: 10px 0; padding: 10px; border: 1px solid #ddd; border-radius: 5px; box-sizing: border-box; }
-        button { background: #007bff; color: white; border: none; padding: 10px; width: 100%; border-radius: 5px; cursor: pointer; }
+        :root {
+            --bg-color: #05070a;
+            --glass-bg: rgba(15, 22, 33, 0.7);
+            --glass-border: rgba(255, 255, 255, 0.1);
+            --accent: #00ff88; /* Cyber Lime */
+            --text-main: #e0e6ed;
+            --text-dim: #94a3b8;
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        
+        body { 
+            font-family: 'Inter', 'Segoe UI', sans-serif; 
+            background: radial-gradient(circle at top right, #0d1b2a, var(--bg-color));
+            background-attachment: fixed;
+            color: var(--text-main);
+            min-height: 100vh;
+            padding: 40px 20px;
+        }
+
+        /* --- CENTERED GLASS LAYOUT --- */
+        .dashboard-container {
+            max-width: 1000px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: 320px 1fr;
+            gap: 25px;
+        }
+
+        /* --- GLASSMORPHIC SIDEBAR --- */
+        .sidebar {
+            background: var(--glass-bg);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid var(--glass-border);
+            border-radius: 24px;
+            padding: 40px 20px;
+            text-align: center;
+            height: fit-content;
+        }
+
+        .profile-icon {
+            width: 80px; height: 80px;
+            background: linear-gradient(135deg, var(--accent), #00d4ff);
+            border-radius: 20px;
+            margin: 0 auto 20px;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 32px; font-weight: 800; color: #05070a;
+            box-shadow: 0 0 20px rgba(0, 255, 136, 0.3);
+        }
+
+        .sidebar h1 { font-size: 1.8rem; margin-bottom: 10px; letter-spacing: -1px; }
+        .sidebar p { color: var(--text-dim); font-size: 0.9rem; line-height: 1.6; }
+
+        /* --- MAIN CONTENT AREA --- */
+        .content-area { display: flex; flex-direction: column; gap: 25px; }
+
+        /* --- GLASS INPUT FORM --- */
+        .input-card {
+            background: var(--glass-bg);
+            backdrop-filter: blur(16px);
+            border: 1px solid var(--glass-border);
+            border-radius: 24px;
+            padding: 30px;
+            transition: border-color 0.3s ease;
+        }
+
+        .input-card:focus-within { border-color: var(--accent); }
+
+        h3 { font-size: 1.1rem; margin-bottom: 20px; color: var(--accent); text-transform: uppercase; letter-spacing: 1px; }
+
+        input, textarea {
+            width: 100%;
+            background: rgba(0, 0, 0, 0.3);
+            border: 1px solid var(--glass-border);
+            border-radius: 12px;
+            padding: 14px;
+            color: white;
+            margin-bottom: 15px;
+            outline: none;
+            font-family: inherit;
+        }
+
+        button {
+            width: 100%;
+            background: var(--accent);
+            color: #05070a;
+            border: none;
+            padding: 14px;
+            border-radius: 12px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        button:hover { transform: translateY(-2px); box-shadow: 0 10px 20px rgba(0, 255, 136, 0.2); }
+
+        /* --- GLASS FEED CARDS --- */
+        .feed-container { display: flex; flex-direction: column; gap: 15px; }
+
+        .update-card {
+            background: var(--glass-bg);
+            border: 1px solid var(--glass-border);
+            border-radius: 18px;
+            padding: 20px;
+            transition: 0.3s;
+        }
+
+        .update-card:hover { 
+            background: rgba(255, 255, 255, 0.03); 
+            transform: translateX(10px);
+            border-color: rgba(255, 255, 255, 0.2);
+        }
+
+        .update-card h4 { color: var(--accent); margin-bottom: 8px; }
+        .update-card p { font-size: 0.95rem; color: var(--text-main); opacity: 0.9; }
+        .update-card .timestamp { display: block; margin-top: 12px; font-size: 0.75rem; color: var(--text-dim); }
+
+        /* Mobile View */
+        @media (max-width: 800px) {
+            .dashboard-container { grid-template-columns: 1fr; }
+            .sidebar { width: 100%; }
+        }
     </style>
 </head>
 <body>
-    <h1>🚀 Vibe Check</h1>
-    <form action="/add" method="POST">
-        <input type="text" name="skill" placeholder="What are you learning?" required>
-        <textarea name="notes" placeholder="Notes..."></textarea>
-        <button type="submit">Post Update</button>
-    </form>
-    <hr>
-    {% for post in posts %}
-    <div class="card">
-        <strong>{{ post.skill }}</strong> <small>{{ post.date }}</small>
-        <p>{{ post.notes }}</p>
+
+    <div class="dashboard-container">
+        <aside class="sidebar">
+            <div class="profile-icon">AB</div>
+            <h1>Abhijith</h1>
+            <p>Full-Stack Developer</p>
+            <div style="margin-top: 20px; padding-top: 20px; border-top: 1px solid var(--glass-border);">
+                <p style="color: var(--accent); font-weight: 600;">Current Stack:</p>
+                <p>Python • Flask • MongoDB</p>
+            </div>
+        </aside>
+
+        <main class="content-area">
+            <section class="input-card">
+                <h3>System Update</h3>
+                <form action="/add" method="POST">
+                    <input type="text" name="skill" placeholder="Module/Skill Name" required>
+                    <textarea name="notes" placeholder="Detailed logs..." rows="3"></textarea>
+                    <button type="submit">Push to Database</button>
+                </form>
+            </section>
+
+            <div class="feed-container">
+                <h3 style="padding-left: 10px;">Activity Logs</h3>
+                {% for post in posts %}
+                <div class="update-card">
+                    <h4>{{ post.skill }}</h4>
+                    <p>{{ post.notes }}</p>
+                    <span class="timestamp">ENTRY ID: {{ post._id }} | DATE: {{ post.date }}</span>
+                </div>
+                {% endfor %}
+            </div>
+        </main>
     </div>
-    {% endfor %}
+
 </body>
 </html>
